@@ -13,6 +13,10 @@ app.use('/graphql', GraphHTTP({
 }))
 
 app.listen(APP_PORT, function(){
-  console.log(`app listening on port $(APP_PORT) `);
-
+  console.log('app listening on port ' +APP_PORT );
+  var x= Date.now()
+  var date=new Date();
+  date.setTime(x);
+  dateString = date.toUTCString();
+  console.log(dateString);
 });
