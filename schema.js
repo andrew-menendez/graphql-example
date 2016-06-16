@@ -84,10 +84,22 @@ var Product = new ObjectType({
   description: 'a product to be reviewed',
   fields: function(){
     return {
+      id: {
+        type: graphQL.GraphQLInt,
+        resolve(product) {
+          return product.id;
+        }
+      },
       name: {
         type: graphQL.GraphQLString,
         resolve(product){
           return product.name;
+        }
+      },
+      inStock: {
+        type: graphQL.GraphQLInt,
+        resolve(product) {
+          return product.inStock;
         }
       },
       posts: {
@@ -147,6 +159,14 @@ var Query = new ObjectType({
         },
         products:{
           type: new graphQL.GraphQLList(Product),
+          args: {
+            id: {
+              type:graphQL.GraphQLInt
+            },
+            name: {
+              type: graphQL.GraphQLString
+            }
+          },
           resolve(root,args){ // associate the root query to the db.
             console.log('args is ',args);
             return db.product.findAll({where:args})

@@ -58,15 +58,24 @@ sql.sync({force:true}).then(function(){
       lastName: faker.name.lastName(),
       email: faker.internet.email()
     }).then(function(person){
-        return person.createPost({
-          title:faker.commerce.productName()+' by ' +person.firstName,
+      let createPosts = [];
+
+      _.times(4,function(){
+        createPosts.push(person.createPost({
+          title:faker.company.bsAdjective()+' Product Review by ' +person.firstName,
           content: ' sample text'
-        })
-    }).then(function(post){
+        }))
+      })
+
+      return Promise.all(createPosts);
+
+    }).map(function(post){
       return post.createProduct({
         name:faker.commerce.productName(),
         inStock:Math.floor(Math.random() * 100)
       })
+    }).then(function(){
+      console.log('done?');
     })
   })
 })
