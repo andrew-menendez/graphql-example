@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
         Post.belongsTo(models.person);
+        Post.belongsTo(models.product)
       }
     }
   });

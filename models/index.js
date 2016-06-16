@@ -59,9 +59,14 @@ sql.sync({force:true}).then(function(){
       email: faker.internet.email()
     }).then(function(person){
         return person.createPost({
-          title:'Birds are crazy, by ' +person.firstName,
+          title:faker.commerce.productName()+' by ' +person.firstName,
           content: ' sample text'
         })
+    }).then(function(post){
+      return post.createProduct({
+        name:faker.commerce.productName(),
+        inStock:Math.floor(Math.random() * 100)
+      })
     })
   })
 })

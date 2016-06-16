@@ -68,10 +68,37 @@ var Post = new ObjectType({
         resolve(post){
           return post.getPerson();
         }
+      },
+      product: {
+        type: Product,
+        resolve(post){
+          return post.getProduct();
+        }
       }
     };// end of return
   }
 });
+
+var Product = new ObjectType({
+  name: 'Product',
+  description: 'a product to be reviewed',
+  fields: function(){
+    return {
+      name: {
+        type: graphQL.GraphQLString,
+        resolve(product){
+          return product.name;
+        }
+      },
+      posts: {
+        type: new graphQL.GraphQLList(Post), // use this whenever you need an array returned...
+        resolve(product){
+          return product.getPosts() // this connection was made in Sequelize; Very similar to populate in Mongoose
+        }
+      }
+    }
+  }
+})
 
 // the root query:
 // like public api methods
@@ -116,6 +143,13 @@ var Query = new ObjectType({
           resolve(root,args){ // associate the root query to the db.
             console.log('args is ',args);
             return db.post.findAll({where:args})
+          }
+        },
+        products:{
+          type: new graphQL.GraphQLList(Product),
+          resolve(root,args){ // associate the root query to the db.
+            console.log('args is ',args);
+            return db.product.findAll({where:args})
           }
         }
       }
